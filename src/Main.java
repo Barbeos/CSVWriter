@@ -1,21 +1,31 @@
-import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
     	Cars car = new Cars(2,"hub");
-        FileWriter writer = new FileWriter("beef.sav");
+    	ArrayList<String[]> line = new ArrayList<String[]>();
+    	CSVWriter cSVWriter = new CSVWriter("beef.sav", false);
+    	CSVReader cSVReader = new CSVReader();
 
-        CSVWriter.writeLine(writer, Arrays.asList("a", "2", "c", "d"));
+        cSVWriter.writeLine(Arrays.asList(15.7786, car.wheel, "gttc", "jhkd"));
         
-        CSVWriter.writeLine(writer, Arrays.asList(car.name, car.wheel, "c", "d"));
+        cSVWriter.writeLine(Arrays.asList(car.name, car.wheel, "c", "d"));
 
-        CSVWriter.writeLine(writer, Arrays.asList("aaa", "bbb", "cc\"c"));
-
-        //writer.flush();
-        writer.close();
+        cSVWriter.writeLine(Arrays.asList(3,4,8,7.456546,7.456, "sfgs"));
+        cSVWriter.writeLine(Arrays.asList(car));
+       
+        cSVWriter.closeWriter();
+        
+        line =cSVReader.cSVReader("beef.sav");
+        
+		 for(String[] s: line) {
+			 for(String k: s) {
+				 System.out.println(k);
+			 }
+			 
+		 }
 
     }
-
 }

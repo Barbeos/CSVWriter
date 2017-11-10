@@ -1,38 +1,55 @@
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.List;
 
 public class CSVWriter {
+	private final char SEPARATOR = ',';
+	FileWriter writer;
+	public CSVWriter(String fileName, boolean append){
+		 try {
+			writer = new FileWriter(fileName, append);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-    private static final char SEPARATOR = ',';
+	public void writeLine(List<Object> values){
+		writeLine(values, SEPARATOR);
+	}
 
-    public static void writeLine(Writer w, List<Object> values) throws IOException {
-        writeLine(w, values, SEPARATOR, ' ');
-    }
+	public void writeLine(List<Object> values, char separator){
+		boolean first = false;
 
-    public static void writeLine(Writer w, List<Object> values, char separators, char customQuote) throws IOException {
-        boolean first = true;
+		if (separator == ' ') {
+			separator = SEPARATOR;
+		}
 
-        if (separators == ' ') {
-            separators = SEPARATOR;
-        }
+		StringBuilder sb = new StringBuilder();
+		for (Object value : values) {
 
-        StringBuilder sb = new StringBuilder();
-        for (Object value : values) {
-            if (!first) {
-                sb.append(separators);
-            }
-            if (customQuote == ' ') {
-            	
-                sb.append(changeType(value));
-            } 
-            first = false;
-        }
-        sb.append("\n");
-        w.append(sb.toString());     
-    }
-   
-    public static String changeType(Object value) {
-    	return value.toString();
-    }
+			if (first) {
+				sb.append(separator);
+			}
+
+			sb.append(value.toString());
+
+			first = true;
+		}
+		sb.append("\n");
+		try {
+			writer.append(sb.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void closeWriter() {
+		try {
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
